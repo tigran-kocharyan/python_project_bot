@@ -1,6 +1,7 @@
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import requests
 import datetime
+import os
 
 up = Updater("728506589:AAEwkNES9a9koAm8CKaOqUDorarnRJaeFY4")
 dp = up.dispatcher
@@ -30,5 +31,11 @@ dp.add_handler(start)
 dp.add_handler(weather)
 dp.add_handler(MessageHandler(Filters.text, echo))
 
-up.start_polling()
+#webhook settings
+PORT = int(os.environ.get('PORT', '5000'))
+TOKEN="728506589:AAEwkNES9a9koAm8CKaOqUDorarnRJaeFY4"
+up.start_webhook(listen='0.0.0.0', port=PORT, url_path=TOKEN)
+up.bot.set_webhook("https://project-py-bot.herokuapp.com/728506589:AAEwkNES9a9koAm8CKaOqUDorarnRJaeFY4")
+                        
+#up.start_polling()
 up.idle()
