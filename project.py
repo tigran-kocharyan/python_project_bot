@@ -42,7 +42,7 @@ def weather(bot, up):
         settings = {'q': 'Tashkent', 'units': 'metric', 'lang': 'en', 'APPID': api}
         r = requests.get('http://api.openweathermap.org/data/2.5/forecast', params=settings)
         data=r.json()
-        bot.sendMessage(chat_id=up.message.chat_id, text=f"Current weather in Tashkent: {int(data['list'][0]['main']['temp_max'])}°C")
+        bot.sendMessage(chat_id=up.message.chat_id, text=f"Current weather in Tashkent: {int(data['list'][0]['main']['temp_max'])}°C", reply_markup=buttons())
     except Exception as e:
         print("Exception (weather):", e)
         pass
