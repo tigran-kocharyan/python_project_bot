@@ -24,6 +24,7 @@ def get_callback_from_button(bot, up):
     chat_id = query.message.chat.id
     message_id = query.message.message_id
     if int(query.data) == 1:
+        query.answer()
         api='0f798fa08e77c5b4a2ad9d1bcbf5d700'
         try:
             settings = {'q': 'Tashkent', 'units': 'metric', 'lang': 'en', 'APPID': api}
@@ -35,6 +36,7 @@ def get_callback_from_button(bot, up):
             pass
     elif int(query.data) == 2:
         bot.sendMessage(chat_id=chat_id,text="You're welcome (^_~)")
+        query.answer()                    
 
 def weather(bot, up):
     api='0f798fa08e77c5b4a2ad9d1bcbf5d700'
@@ -42,7 +44,7 @@ def weather(bot, up):
         settings = {'q': 'Tashkent', 'units': 'metric', 'lang': 'en', 'APPID': api}
         r = requests.get('http://api.openweathermap.org/data/2.5/forecast', params=settings)
         data=r.json()
-        bot.sendMessage(chat_id=up.message.chat_id, text=f"Current weather in Tashkent: {int(data['list'][0]['main']['temp_max'])}°C", reply_markup=buttons())
+        bot.sendMessage(chat_id=up.message.chat_id, text=f"Current weather in Tashkent: {int(data['list'][0]['main']['temp_max'])}°C", reply_markup=buttons())                
     except Exception as e:
         print("Exception (weather):", e)
         pass
