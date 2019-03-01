@@ -1,4 +1,5 @@
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton
 import requests
 import datetime
 import os
@@ -13,6 +14,28 @@ def start(bot, up):
 def echo(bot, up):
     up.message.reply_text("Undefined ┐('～`;)┌")
 
+def buttons():
+    keys=[[InlineKeyboardButton('Tomorrow', callback_data='1'), InlineKeyboardButton('No, thanks!', callback_data='2')]]
+    return InlineKeyboardMarkup(inline_keyboard=keys)
+
+def get_callback_from_button(bot, up):
+    query = up.callback_query
+    username = up.effective_user.username
+    chat_id = query.message.chat.id
+    message_id = query.message.message_id
+    if int(query.data) == 1:
+        api='0f798fa08e77c5b4a2ad9d1bcbf5d700'
+        try:
+            settings = {'q': 'Tashkent', 'units': 'metric', 'lang': 'en', 'APPID': api}
+            r = requests.get('http://api.openweathermap.org/data/2.5/forecast', params=settings)
+            data=r.json()
+            bot.sendMessage(chat_id=chat_id, text=f"Tomorrow's weather in Tashkent: {int(data['list'][1]['main']['temp_max'])}°C")
+        except Exception as e:
+            print("Exception (weather):", e)
+            pass
+    elif int(query.data) == 2:
+        bot.sendMessage(chat_id=chat_id,text="You're welcome (^_~)")
+
 def weather(bot, up):
     api='0f798fa08e77c5b4a2ad9d1bcbf5d700'
     try:
@@ -20,7 +43,6 @@ def weather(bot, up):
         r = requests.get('http://api.openweathermap.org/data/2.5/forecast', params=settings)
         data=r.json()
         bot.sendMessage(chat_id=up.message.chat_id, text=f"Current weather in Tashkent: {int(data['list'][0]['main']['temp_max'])}°C")
-        bot.sendMessage(chat_id=up.message.chat_id, text=f"Tomorrow's weather in Tashkent: {int(data['list'][1]['main']['temp_max'])}°C")
     except Exception as e:
         print("Exception (weather):", e)
         pass
@@ -31,6 +53,7 @@ weather = CommandHandler("weather", weather)
 dp.add_handler(start)
 dp.add_handler(weather)
 dp.add_handler(MessageHandler(Filters.text, echo))
+dp.add_handler(CallbackQueryHandler(get_callback_from_button))
 
 #webhook settings
 PORT = int(os.environ.get('PORT', '5000'))
