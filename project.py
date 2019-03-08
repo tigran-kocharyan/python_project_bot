@@ -6,6 +6,7 @@ import os
 
 up = Updater("728506589:AAEwkNES9a9koAm8CKaOqUDorarnRJaeFY4")
 dp = up.dispatcher
+job = up.job_queue
 
 def start(bot, up):
     up.message.reply_text('Hello (*・ω・)ﾉ')
@@ -17,6 +18,14 @@ def echo(bot, up):
 def buttons():
     keys=[[InlineKeyboardButton('Tomorrow', callback_data='1'), InlineKeyboardButton('No, thanks!', callback_data='2')]]
     return InlineKeyboardMarkup(inline_keyboard=keys)
+
+def callback_time(bot, job):
+    bot.send_message(chat_id=job.context, text='Beep!')
+    
+def repeat(bot, up, job_queue):
+    job_queue.start()
+    bot.send_message(chat_id=up.message.chat_id, text='Starting... (´• ω •`)')
+    job_queue.run_repeating(callback_time, interval=7200, first=0, context=up.message.chat_id)
 
 def get_callback_from_button(bot, up):
     query = up.callback_query
@@ -52,8 +61,10 @@ def weather(bot, up):
 dp = up.dispatcher
 start = CommandHandler("start", start)
 weather = CommandHandler("weather", weather)
+repeat = CommandHandler("repeat", repeat, pass_job_queue=True)
 dp.add_handler(start)
 dp.add_handler(weather)
+dp.add_handler(repeat)
 dp.add_handler(MessageHandler(Filters.text, echo))
 dp.add_handler(CallbackQueryHandler(get_callback_from_button))
 
@@ -62,6 +73,5 @@ PORT = int(os.environ.get('PORT', '5000'))
 TOKEN="728506589:AAEwkNES9a9koAm8CKaOqUDorarnRJaeFY4"
 up.start_webhook(listen='0.0.0.0', port=PORT, url_path=TOKEN)
 up.bot.set_webhook("https://project-py-bot.herokuapp.com/728506589:AAEwkNES9a9koAm8CKaOqUDorarnRJaeFY4")
-                        
-#up.start_polling()
+
 up.idle()
