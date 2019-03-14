@@ -2,5 +2,5 @@
 python-telegram-bot
 requests
 datetime
-
+psycopg2-binary
 
