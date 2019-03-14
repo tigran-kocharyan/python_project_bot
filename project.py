@@ -1,4 +1,4 @@
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler
+ffrom telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton
 import requests
 import datetime
@@ -7,6 +7,8 @@ import os
 
 up = Updater("728506589:AAEwkNES9a9koAm8CKaOqUDorarnRJaeFY4")
 dp = up.dispatcher
+bd = sql.connect(host="ec2-54-247-118-238.eu-west-1.compute.amazonaws.com", dbname="d94l6q6a6g2mvm", user="jguojvyjehytsn", password="2fa3407deca1f2bc920fefc973912b3ed4388f727c6bd88039552d6032a458d9")
+cur=bd.cursor()
 
 def start(bot, up):
     up.message.reply_text('Hello (*・ω・)ﾉ')
@@ -14,20 +16,24 @@ def start(bot, up):
                      document='CAADAQAD4AEAAkWQ0AeCTzUa7LnRbQI')
 
 def default(bot, up):
-    up.message.reply_text("Undefined ┐('～`;)┌")
+    if up.message.text!="Weight" and up.message.text!="Height" and up.message.text!="Age" and up.message.text!="EXIT":
+        up.message.reply_text("Undefined ┐('～`;)┌")
 
 def echo(bot, up):
     exit_admin(bot, up)
     button_1(bot, up)
     button_2(bot, up)
+    button_3(bot, up)
+    default(bot, up)
 
 #___________________Panel Settings_____________________________________________________#
 
-keyb=[["Button #1","Button #2"],["EXIT"]]
+keyb=[["Weight","Height", "Age"],["EXIT"]]
 bot_panel=telegram.ReplyKeyboardMarkup(keyb,resize_keyboard=True,one_time_keyboard=True)
 remove=telegram.ReplyKeyboardRemove()
+force=telegram.ForceReply()
 
-def panel(bot, up):
+def parameters(bot, up):
     bot.sendMessage(up.message.chat.id,"Выберете действие:",reply_markup=bot_panel)
 
 #___________________Panel Processing_____________________________________________________#
@@ -37,11 +43,15 @@ def exit_admin(bot,up):
         bot.sendMessage(up.message.chat.id,"Exit (ノωヽ)",reply_markup=remove)
 
 def button_1(bot,up):
-    if up.message.text=="Button #1": 
-        bot.sendMessage(up.message.chat.id,"#1 (→_→)",reply_markup=remove)
+    if up.message.text=="Weight": 
+        bot.sendMessage(chat_id=up.message.chat.id, text="Enter your weight:", reply_markup=force) 
 
 def button_2(bot,up):
-    if up.message.text=="Button #2":
+    if up.message.text=="Height":
+        bot.sendMessage(up.message.chat.id,"#2 (←_←)",reply_markup=remove)
+
+def button_3(bot, up):
+    if up.message.text=="Age":
         bot.sendMessage(up.message.chat.id,"#2 (←_←)",reply_markup=remove)
 
 #___________________Buttons Settings_____________________________________________________#
@@ -93,10 +103,10 @@ def weather(bot, up):
 
 dp = up.dispatcher
 start = CommandHandler("start", start)
-panel = CommandHandler("panel", panel)
+parameters = CommandHandler("parameters", parameters)
 weather = CommandHandler("weather", weather)
 dp.add_handler(start)
-dp.add_handler(panel)
+dp.add_handler(parameters)
 dp.add_handler(weather)
 dp.add_handler(MessageHandler(Filters.text, echo))
 dp.add_handler(CallbackQueryHandler(get_callback_from_button))
