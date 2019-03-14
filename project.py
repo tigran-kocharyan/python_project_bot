@@ -3,6 +3,7 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardRe
 import requests
 import datetime
 import telegram
+import psycopg2 as sql
 import os
 
 up = Updater("728506589:AAEwkNES9a9koAm8CKaOqUDorarnRJaeFY4")
