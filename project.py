@@ -60,7 +60,7 @@ def button_1(bot,up):
     if up.message.text=="Weight": 
         bot.sendMessage(chat_id=up.message.chat.id, text="Enter your weight:", reply_markup=force) 
     if up.message.reply_to_message.text == "Enter your weight:":
-        if(up.message.text>0):
+        if(int(up.message.text>0)):
                 db_add(up.message.text, 'weight', up.message.chat.id)
                 bot.sendMessage(up.message.chat.id, "Your weight is added. Check the table", reply_markup = remove)
         else:
