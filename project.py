@@ -13,8 +13,8 @@ cur=bd.cursor()
 
 def start(bot, up):
     up.message.reply_text('Hello (*・ω・)ﾉ')
-    bot.sendDocument(chat_id=up.message.chat_id,
-                     document='CAADAQAD4AEAAkWQ0AeCTzUa7LnRbQI')
+    bot.sendDocument(chat_id=up.message.chat_id, document='CAADAQAD4AEAAkWQ0AeCTzUa7LnRbQI')
+    check_id(up.message.chat.id)
 
 def default(bot, up):
     if up.message.text!="Weight" and up.message.text!="Height" and up.message.text!="Age" and up.message.text!="EXIT":
@@ -27,7 +27,16 @@ def echo(bot, up):
     button_3(bot, up)
     default(bot, up)
 
-#___________________Panel Settings_____________________________________________________#
+#___________________ID Settings__________________________________________________________#
+
+def check_id(id):                                                   # Пополнение базы data
+    cur.execute("SELECT id from data;")
+    data_id = cur.fetchall()
+    if (id,) not in data_id:
+        cur.execute("INSERT into data VALUES({0});".format(id))
+        bd.commit()
+
+#___________________Panel Settings_______________________________________________________#
 
 keyb=[["Weight","Height", "Age"],["EXIT"]]
 bot_panel=telegram.ReplyKeyboardMarkup(keyb,resize_keyboard=True,one_time_keyboard=True)
@@ -35,7 +44,7 @@ remove=telegram.ReplyKeyboardRemove()
 force=telegram.ForceReply()
 
 def parameters(bot, up):
-    bot.sendMessage(up.message.chat.id,"Выберете действие:",reply_markup=bot_panel)
+    bot.sendMessage(up.message.chat.id,"Choose:",reply_markup=bot_panel)
 
 #___________________Panel Processing_____________________________________________________#
 
@@ -49,11 +58,12 @@ def button_1(bot,up):
 
 def button_2(bot,up):
     if up.message.text=="Height":
-        bot.sendMessage(up.message.chat.id,"#2 (←_←)",reply_markup=remove)
+        bot.sendMessage(up.message.chat.id,
+                        "Enter your height:", reply_markup=force)
 
 def button_3(bot, up):
     if up.message.text=="Age":
-        bot.sendMessage(up.message.chat.id,"#2 (←_←)",reply_markup=remove)
+        bot.sendMessage(up.message.chat.id, "Enter your age (in months):", reply_markup=force)
 
 #___________________Buttons Settings_____________________________________________________#
 
