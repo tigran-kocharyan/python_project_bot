@@ -18,7 +18,7 @@ def start(bot, up):
 
 def default(bot, up):
     if up.message.text!="Weight" and up.message.text!="Height" and up.message.text!="Age" and up.message.text!="EXIT":
-        up.message.reply_text("Undefined ┐('～`;)┌")
+        up.message.reply_text("┐('～`;)┌")
 
 def echo(bot, up):
     exit_admin(bot, up)
