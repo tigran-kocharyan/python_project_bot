@@ -36,8 +36,8 @@ def check_id(id):                                                   # Попол
         cur.execute("INSERT into data (id) VALUES({0});".format(id))
         bd.commit()
 
-def db_add(number, id_db):
-    cur.execute("UPDATE data SET weight = {0} WHERE id = {1};".format(int(number), id_db))
+def db_add(number, param, id_db):
+    cur.execute(f"UPDATE data SET {param} = {int(number)} WHERE id = {id_db};")
     bd.commit()
 
 #___________________Panel Settings_______________________________________________________#
@@ -60,8 +60,8 @@ def button_1(bot,up):
     if up.message.text=="Weight": 
         bot.sendMessage(chat_id=up.message.chat.id, text="Enter your weight:", reply_markup=force) 
     if up.message.reply_to_message.text == "Enter your weight:":
-        if(int(up.message.text>0)):
-                db_add(up.message.text, up.message.chat.id)
+        if int(up.message.text)>0:
+                db_add(up.message.text, 'weight', up.message.chat.id)
                 bot.sendMessage(up.message.chat.id, "Your weight is added. Check the table", reply_markup = remove)
         else:
                 bot.sendMessage(chat_id=up.message.chat.id, text="Ooops, sorry, incorrect data. Try again!", reply_markup=remove)
