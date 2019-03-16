@@ -33,7 +33,7 @@ def check_id(id):                                                   # Попол
     cur.execute("SELECT id from data;")
     data_id = cur.fetchall()
     if (id,) not in data_id:
-        cur.execute("INSERT into data VALUES({0});".format(id))
+        cur.execute("INSERT into data (id) VALUES({0});".format(id))
         bd.commit()
 
 #___________________Panel Settings_______________________________________________________#
@@ -130,3 +130,4 @@ up.start_webhook(listen='0.0.0.0', port=PORT, url_path=TOKEN)
 up.bot.set_webhook("https://project-py-bot.herokuapp.com/728506589:AAEwkNES9a9koAm8CKaOqUDorarnRJaeFY4")
 
 up.idle()
+
