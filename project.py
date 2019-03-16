@@ -27,7 +27,7 @@ def echo(bot, up):
     button_3(bot, up)
     default(bot, up)
 
-#___________________ID Settings__________________________________________________________#
+#___________________ID + BD Settings_____________________________________________________#
 
 def check_id(id):                                                   # Пополнение базы data
     cur.execute("SELECT id from data;")
@@ -35,6 +35,10 @@ def check_id(id):                                                   # Попол
     if (id,) not in data_id:
         cur.execute("INSERT into data (id) VALUES({0});".format(id))
         bd.commit()
+
+def db_add(number, param):
+    cur.execute(f"insert into data ({param}) values ({number});")
+    conn.commit()
 
 #___________________Panel Settings_______________________________________________________#
 
@@ -55,6 +59,12 @@ def exit_admin(bot,up):
 def button_1(bot,up):
     if up.message.text=="Weight": 
         bot.sendMessage(chat_id=up.message.chat.id, text="Enter your weight:", reply_markup=force) 
+    if up.message.reply_to_message.text == "Enter your weight:":
+        if(up.message.text>0):
+                db_add(up.message.text, "weight")
+                bot.sendMessage(up.message.chat.id, "Your weight is added. Check the table", reply_markup = remove)
+        else:
+                bot.sendMessage(chat_id=up.message.chat.id, text="Sorry, incorrect data. Try again!", reply_markup=remove)
 
 def button_2(bot,up):
     if up.message.text=="Height":
@@ -130,4 +140,3 @@ up.start_webhook(listen='0.0.0.0', port=PORT, url_path=TOKEN)
 up.bot.set_webhook("https://project-py-bot.herokuapp.com/728506589:AAEwkNES9a9koAm8CKaOqUDorarnRJaeFY4")
 
 up.idle()
-
