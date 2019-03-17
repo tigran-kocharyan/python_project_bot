@@ -22,10 +22,7 @@ def default(bot, up):
 
 def echo(bot, up):
     exit_admin(bot, up)
-    button_1(bot, up)
-    button_2(bot, up)
-    button_3(bot, up)
-    default(bot, up)
+    button_check(bot, up)
 
 #___________________ID + BD Settings_____________________________________________________#
 
@@ -56,30 +53,27 @@ def exit_admin(bot,up):
     if up.message.text=="EXIT": 
         bot.sendMessage(up.message.chat.id,"Exit (ノωヽ)",reply_markup=remove)
 
-def button_1(bot,up):
+def button_check(bot, up):
+    #___________________Weight Processing________________________________________________#
+
     if up.message.text=="Weight": 
         bot.sendMessage(chat_id=up.message.chat.id, text="Enter your weight:", reply_markup=force) 
-    if up.message.reply_to_message.text == "Enter your weight:":
-        if int(up.message.text)>0:
+        if up.message.reply_to_message.text == "Enter your weight:":
+            if int(up.message.text)>0:
                 db_add(up.message.text, 'weight', up.message.chat.id)
                 bot.sendMessage(up.message.chat.id, "Your weight is added. Check the table", reply_markup = remove)
-        else:
-                bot.sendMessage(chat_id=up.message.chat.id, text="Ooops, sorry, incorrect data. Try again!", reply_markup=remove)
+            else:
+                break
+    #___________________Height Processing________________________________________________#
 
-def button_2(bot,up):
-    bot.sendMessage(chat_id=up.message.chat.id, text="Seems OK")
     if up.message.text=="Height": 
         bot.sendMessage(chat_id=up.message.chat.id, text="Enter your height:", reply_markup=force) 
-    if up.message.reply_to_message.text == "Enter your height:":
-        if int(up.message.text)>0:
+        if up.message.reply_to_message.text == "Enter your height:":
+            if int(up.message.text)>0:
                 db_add(up.message.text, 'height', up.message.chat.id)
                 bot.sendMessage(up.message.chat.id, "Your height is added. Check the table", reply_markup = remove)
-        else:
-                bot.sendMessage(chat_id=up.message.chat.id, text="Ooops, sorry, incorrect data. Try again!", reply_markup=remove)
-
-def button_3(bot, up):
-    if up.message.text=="Age":
-        bot.sendMessage(up.message.chat.id, "Enter your age (in months):", reply_markup=force)
+    else:
+        bot.sendMessage(chat_id=up.message.chat.id, text="Ooops, sorry, incorrect data. Try again!", reply_markup=remove)
 
 #___________________Buttons Settings_____________________________________________________#
 
@@ -108,6 +102,8 @@ def buttons():
     keys = [[InlineKeyboardButton('Tomorrow', callback_data='1'), InlineKeyboardButton('No, thanks!', callback_data='2')]]
     return InlineKeyboardMarkup(inline_keyboard=keys)
 
+
+
 #___________________Tashkent Weather_____________________________________________________#
 
 def weather(bot, up):
@@ -124,7 +120,7 @@ def weather(bot, up):
         print("Exception (weather):", e)
         pass
 
-#___________________Dispatcher settings__________________________________________________#
+#___________________dispatcher settgings_________________________________________________#
 
 dp = up.dispatcher
 start = CommandHandler("start", start)
@@ -136,7 +132,7 @@ dp.add_handler(weather)
 dp.add_handler(MessageHandler(Filters.text, echo))
 dp.add_handler(CallbackQueryHandler(get_callback_from_button))
 
-#___________________Webhook settings_____________________________________________________#
+#___________________webhook settings_____________________________________________________#
 
 PORT = int(os.environ.get('PORT', '5000'))
 TOKEN = "728506589:AAEwkNES9a9koAm8CKaOqUDorarnRJaeFY4"
