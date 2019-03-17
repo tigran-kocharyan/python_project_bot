@@ -18,7 +18,7 @@ def start(bot, up):
 
 def default(bot, up):
     if up.message.text!="Weight" and up.message.text!="Height" and up.message.text!="Age" and up.message.text!="EXIT":
-        up.message.reply_text("┐('～`;)┌")
+        up.message.reply_text("OK ┐('～`;)┌")
 
 def echo(bot, up):
     exit_admin(bot, up)
@@ -67,9 +67,14 @@ def button_1(bot,up):
                 bot.sendMessage(chat_id=up.message.chat.id, text="Ooops, sorry, incorrect data. Try again!", reply_markup=remove)
 
 def button_2(bot,up):
-    if up.message.text=="Height":
-        bot.sendMessage(up.message.chat.id,
-                        "Enter your height:", reply_markup=force)
+    if up.message.text=="Height": 
+        bot.sendMessage(chat_id=up.message.chat.id, text="Enter your height:", reply_markup=force) 
+    if up.message.reply_to_message.text == "Enter your height:":
+        if int(up.message.text)>0:
+                db_add(up.message.text, 'height', up.message.chat.id)
+                bot.sendMessage(up.message.chat.id, "Your height is added. Check the table", reply_markup = remove)
+        else:
+                bot.sendMessage(chat_id=up.message.chat.id, text="Ooops, sorry, incorrect data. Try again!", reply_markup=remove)
 
 def button_3(bot, up):
     if up.message.text=="Age":
