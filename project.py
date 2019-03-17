@@ -55,21 +55,21 @@ def exit_admin(bot,up):
 
 def button_check(bot, up):
     #___________________Weight Processing________________________________________________#
-
     if up.message.text=="Weight": 
         bot.sendMessage(chat_id=up.message.chat.id, text="Enter your weight:", reply_markup=force) 
-        if up.message.reply_to_message.text == "Enter your weight:":
-            if int(up.message.text)>0:
-                db_add(up.message.text, 'weight', up.message.chat.id)
-                bot.sendMessage(up.message.chat.id, "Your weight is added. Check the table", reply_markup = remove)
+    
     #___________________Height Processing________________________________________________#
-
     if up.message.text=="Height": 
-        bot.sendMessage(chat_id=up.message.chat.id, text="Enter your height:", reply_markup=force) 
-        if up.message.reply_to_message.text == "Enter your height:":
-            if int(up.message.text)>0:
-                db_add(up.message.text, 'height', up.message.chat.id)
-                bot.sendMessage(up.message.chat.id, "Your height is added. Check the table", reply_markup = remove)
+        bot.sendMessage(chat_id=up.message.chat.id, text="Enter your height:", reply_markup=force)
+        
+    if up.message.reply_to_message.text == "Enter your weight:":
+        if int(up.message.text)>0:
+            db_add(up.message.text, 'weight', up.message.chat.id)
+            bot.sendMessage(up.message.chat.id, "Your weight is added. Check the table", reply_markup = remove)
+    if up.message.reply_to_message.text == "Enter your height:":
+        if int(up.message.text)>0:
+            db_add(up.message.text, 'height', up.message.chat.id)
+            bot.sendMessage(up.message.chat.id, "Your height is added. Check the table", reply_markup = remove)
     else:
         bot.sendMessage(chat_id=up.message.chat.id, text="Ooops, sorry, incorrect data. Try again!", reply_markup=remove)
 
@@ -87,8 +87,7 @@ def get_callback_from_button(bot, up):
             settings = {'q': 'Tashkent', 'units': 'metric', 'lang': 'en', 'APPID': api}
             r = requests.get('http://api.openweathermap.org/data/2.5/forecast', params=settings)
             data = r.json()
-            bot.sendMessage(
-                chat_id=chat_id, text=f"Tomorrow's weather in Tashkent: {int(data['list'][1]['main']['temp_max'])}°C")
+            bot.sendMessage(chat_id=chat_id, text=f"Tomorrow's weather in Tashkent: {int(data['list'][1]['main']['temp_max'])}°C")
         except Exception as e:
             print("Exception (weather):", e)
             pass
@@ -107,13 +106,11 @@ def buttons():
 def weather(bot, up):
     api = '0f798fa08e77c5b4a2ad9d1bcbf5d700'
     try:
-        settings = {'q': 'Tashkent', 'units': 'metric',
-                    'lang': 'en', 'APPID': api}
+        settings = {'q': 'Tashkent', 'units': 'metric', 'lang': 'en', 'APPID': api}
         r = requests.get(
             'http://api.openweathermap.org/data/2.5/forecast', params=settings)
         data = r.json()
-        bot.sendMessage(chat_id=up.message.chat_id,
-                        text=f"Current weather in Tashkent: {int(data['list'][0]['main']['temp_max'])}°C", reply_markup=buttons())
+        bot.sendMessage(chat_id=up.message.chat_id, text=f"Current weather in Tashkent: {int(data['list'][0]['main']['temp_max'])}°C", reply_markup=buttons())
     except Exception as e:
         print("Exception (weather):", e)
         pass
