@@ -107,8 +107,6 @@ def buttons():
     keys = [[InlineKeyboardButton('Tomorrow', callback_data='1'), InlineKeyboardButton('No, thanks!', callback_data='2')]]
     return InlineKeyboardMarkup(inline_keyboard=keys)
 
-
-
 #___________________Tashkent Weather_____________________________________________________#
 
 def weather(bot, up):
@@ -125,7 +123,7 @@ def weather(bot, up):
         print("Exception (weather):", e)
         pass
 
-#___________________dispatcher settgings_________________________________________________#
+#___________________Dispatcher settings__________________________________________________#
 
 dp = up.dispatcher
 start = CommandHandler("start", start)
@@ -137,7 +135,7 @@ dp.add_handler(weather)
 dp.add_handler(MessageHandler(Filters.text, echo))
 dp.add_handler(CallbackQueryHandler(get_callback_from_button))
 
-#___________________webhook settings_____________________________________________________#
+#___________________Webhook settings_____________________________________________________#
 
 PORT = int(os.environ.get('PORT', '5000'))
 TOKEN = "728506589:AAEwkNES9a9koAm8CKaOqUDorarnRJaeFY4"
