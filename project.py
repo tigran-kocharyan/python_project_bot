@@ -67,6 +67,7 @@ def button_1(bot,up):
                 bot.sendMessage(chat_id=up.message.chat.id, text="Ooops, sorry, incorrect data. Try again!", reply_markup=remove)
 
 def button_2(bot,up):
+    bot.sendMessage(chat_id=up.message.chat.id, text="Seems OK")
     if up.message.text=="Height": 
         bot.sendMessage(chat_id=up.message.chat.id, text="Enter your height:", reply_markup=force) 
     if up.message.reply_to_message.text == "Enter your height:":
