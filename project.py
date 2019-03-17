@@ -62,8 +62,6 @@ def button_check(bot, up):
             if int(up.message.text)>0:
                 db_add(up.message.text, 'weight', up.message.chat.id)
                 bot.sendMessage(up.message.chat.id, "Your weight is added. Check the table", reply_markup = remove)
-            else:
-                break
     #___________________Height Processing________________________________________________#
 
     if up.message.text=="Height": 
