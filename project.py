@@ -70,11 +70,11 @@ def button_check(bot, up):
         bot.sendMessage(up.message.chat.id, "Your age is added. Check the table!👌", reply_markup = remove)
             
             
-    elif up.message.reply_to_message.text == "Enter your weight (use point with floating point numbers):" and float(up.message.text)>0:
+    elif up.message.reply_to_message.text == "Enter your weight (use point with floating point numbers):":
         db_add(float(up.message.text), 'weight', up.message.chat.id)
         bot.sendMessage(up.message.chat.id, "Your weight is added. Check the table!👌", reply_markup = remove)
             
-    elif up.message.reply_to_message.text == "Enter your height in integers:" and int(up.message.text)>0:
+    elif up.message.reply_to_message.text == "Enter your height in integers:":
         db_add(int(up.message.text), 'height', up.message.chat.id)
         bot.sendMessage(up.message.chat.id, "Your height is added. Check the table!👌", reply_markup = remove)
         
