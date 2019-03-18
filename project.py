@@ -66,8 +66,10 @@ def button_check(bot, up):
     
     elif up.message.reply_to_message.text == "Enter the number of years and months since your last birthday (use strictly this order with a space between them):": 
         if int(up.message.text)>0:
-            years_months=up.message.text.split() #splitting the answer into separated words
-            db_add((int(years_months[0]))*12+int(years_months[1]), 'age', up.message.chat.id)
+            text_years=up.message.text
+            years_months=text_years.split() #splitting the answer into separated words
+            answer=(int(years_months[0]))*12+int(years_months[1])
+            db_add(answer, 'age', up.message.chat.id)
             bot.sendMessage(up.message.chat.id, "Your age is added. Check the table!👌", reply_markup = remove)
             
             
