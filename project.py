@@ -69,15 +69,13 @@ def button_check(bot, up):
         db_add((int(years_months[0]))*12+int(years_months[1]), 'age', up.message.chat.id)
         bot.sendMessage(up.message.chat.id, "Your age is added. Check the table!👌", reply_markup = remove)         
             
-    elif up.message.reply_to_message.text == "Enter your weight (use point with floating point numbers):":
-        if (float(up.message.text)>0):
-            db_add(float(up.message.text), 'weight', up.message.chat.id)
-            bot.sendMessage(up.message.chat.id, "Your weight is added. Check the table!👌", reply_markup = remove)
+    elif up.message.reply_to_message.text == "Enter your weight (use point with floating point numbers):" and int(up.message.text)>0:
+        db_add(float(up.message.text), 'weight', up.message.chat.id)
+        bot.sendMessage(up.message.chat.id, "Your weight is added. Check the table!👌", reply_markup = remove)
             
-    elif up.message.reply_to_message.text == "Enter your height in integers:":
-        if (int(up.message.text)>0):
-            db_add(int(up.message.text), 'height', up.message.chat.id)
-            bot.sendMessage(up.message.chat.id, "Your height is added. Check the table!👌", reply_markup = remove)
+    elif up.message.reply_to_message.text == "Enter your height in integers:" and int(up.message.text)>0:
+        db_add(int(up.message.text), 'height', up.message.chat.id)
+        bot.sendMessage(up.message.chat.id, "Your height is added. Check the table!👌", reply_markup = remove)
         
     else:
         bot.sendMessage(chat_id=up.message.chat.id, text="Ooops, sorry, incorrect data. Try again! ┐('～`;)┌", reply_markup=remove)
