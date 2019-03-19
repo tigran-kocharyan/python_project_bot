@@ -80,12 +80,9 @@ def button_check(bot, up):
             bot.sendMessage(chat_id=up.message.chat.id, text="Ooops, sorry, incorrect data. Try again! ┐('～`;)┌", reply_markup=remove)
 
     elif up.message.reply_to_message.text == "Enter your height in integers:" and (int(up.message.text))>0:
-        try:
-            db_add(int(up.message.text), 'height', up.message.chat.id)
-            bot.sendMessage(up.message.chat.id, "Your height is added. Check the table!👌", reply_markup = remove)
-        except Exception:
-            bot.sendMessage(chat_id=up.message.chat.id, text="Ooops, sorry, incorrect data. Try again! ┐('～`;)┌", reply_markup=remove)
-            
+        db_add(int(up.message.text), 'height', up.message.chat.id)
+        bot.sendMessage(up.message.chat.id, "Your height is added. Check the table!👌", reply_markup = remove)
+                
     else:
         bot.sendMessage(chat_id=up.message.chat.id, text="Ooops, sorry, incorrect data. Try again! ┐('～`;)┌", reply_markup=remove)
 
