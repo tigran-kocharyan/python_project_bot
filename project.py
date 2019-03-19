@@ -50,21 +50,21 @@ def exit_admin(bot,up):
         bot.sendMessage(up.message.chat.id,"Exit (ノωヽ)",reply_markup=remove)
 
 def button_check(bot, up):
-    try:
-        #___________________Weight Processing________________________________________________#
-        if up.message.text=="Weight": 
-            bot.sendMessage(chat_id=up.message.chat.id, text="Enter your weight (use point with floating point numbers):", reply_markup=force) 
+    #___________________Weight Processing________________________________________________#
+    if up.message.text=="Weight": 
+        bot.sendMessage(chat_id=up.message.chat.id, text="Enter your weight (use point with floating point numbers):", reply_markup=force) 
 
-        #___________________Height Processing________________________________________________#
-        elif up.message.text=="Height":
-            bot.sendMessage(chat_id=up.message.chat.id, text="Enter your height in integers:", reply_markup=force)
+    #___________________Height Processing________________________________________________#
+    elif up.message.text=="Height":
+        bot.sendMessage(chat_id=up.message.chat.id, text="Enter your height in integers:", reply_markup=force)
 
-        #___________________Age Processing___________________________________________________#
-        elif up.message.text=="Age": 
-            bot.sendMessage(chat_id=up.message.chat.id, text="Enter the number of years and months since your last birthday (use strictly this order with a space between them):", reply_markup=force)
+    #___________________Age Processing___________________________________________________#
+    elif up.message.text=="Age": 
+        bot.sendMessage(chat_id=up.message.chat.id, text="Enter the number of years and months since your last birthday (use strictly this order with a space between them):", reply_markup=force)
 
         #___________________Answer Processing________________________________________________#
 
+    try:
         elif up.message.reply_to_message.text == "Enter the number of years and months since your last birthday (use strictly this order with a space between them):": 
             years_months=up.message.text.split() #splitting the answer into separated words
             db_add((int(years_months[0]))*12+int(years_months[1]), 'age', up.message.chat.id)
