@@ -50,40 +50,30 @@ def exit_admin(bot,up):
         bot.sendMessage(up.message.chat.id,"Exit (ノωヽ)",reply_markup=remove)
 
 def button_check(bot, up):
+    try:
     #___________________Weight Processing________________________________________________#
-    if up.message.text=="Weight": 
-        bot.sendMessage(chat_id=up.message.chat.id, text="Enter your weight (use point with floating point numbers):", reply_markup=force) 
-
+        if up.message.text=="Weight":
+            bot.sendMessage(chat_id=up.message.chat.id, text="Enter your weight (use point with floating point numbers):", reply_markup=force)
     #___________________Height Processing________________________________________________#
-    elif up.message.text=="Height":
-        bot.sendMessage(chat_id=up.message.chat.id, text="Enter your height in integers:", reply_markup=force)
-
+        elif up.message.text=="Height":
+            bot.sendMessage(chat_id=up.message.chat.id, text="Enter your height in integers:", reply_markup=force)
     #___________________Age Processing___________________________________________________#
-    elif up.message.text=="Age": 
-        bot.sendMessage(chat_id=up.message.chat.id, text="Enter the number of years and months since your last birthday (use strictly this order with a space between them):", reply_markup=force)
-
-        #___________________Answer Processing________________________________________________#
-
-    elif up.message.reply_to_message.text == "Enter the number of years and months since your last birthday (use strictly this order with a space between them):": 
-        try:
+        elif up.message.text=="Age":
+            bot.sendMessage(chat_id=up.message.chat.id, text="Enter the number of years and months since your last birthday (use strictly this order with a space between them):", reply_markup=force)
+    #___________________Answer Processing________________________________________________#
+        elif up.message.reply_to_message.text == "Enter the number of years and months since your last birthday(use strictly this order with a space between them):":
             years_months=up.message.text.split() #splitting the answer into separated words
             db_add((int(years_months[0]))*12+int(years_months[1]), 'age', up.message.chat.id)
-            bot.sendMessage(up.message.chat.id, "Your age is added. Check the table!👌", reply_markup = remove)   
-        except Exception:
-            bot.sendMessage(chat_id=up.message.chat.id, text="Ooops, sorry, incorrect data. Try again! ┐('～`;)┌", reply_markup=remove)
-
-    elif up.message.reply_to_message.text == "Enter your weight (use point with floating point numbers):" and (float(up.message.text))>=0:
-        try:
+            bot.sendMessage(up.message.chat.id, "Your age is added. Check the table!👌", reply_markup = remove)  
+               
+        elif up.message.reply_to_message.text == "Enter your weight (use point with floating point numbers):" and (float(up.message.text))>=0:
             db_add(float(up.message.text), 'weight', up.message.chat.id)
             bot.sendMessage(up.message.chat.id, "Your weight is added. Check the table!👌", reply_markup = remove)
-        except Exception:
-            bot.sendMessage(chat_id=up.message.chat.id, text="Ooops, sorry, incorrect data. Try again! ┐('～`;)┌", reply_markup=remove)
-
-    elif up.message.reply_to_message.text == "Enter your height in integers:" and (int(up.message.text))>0:
-        db_add(int(up.message.text), 'height', up.message.chat.id)
-        bot.sendMessage(up.message.chat.id, "Your height is added. Check the table!👌", reply_markup = remove)
-                
-    else:
+       
+        elif up.message.reply_to_message.text == "Enter your height in integers:" and (int(up.message.text))>0:
+            db_add(int(up.message.text), 'height', up.message.chat.id)
+            bot.sendMessage(up.message.chat.id, "Your height is added. Check the table!👌", reply_markup = remove)              
+    except:
         bot.sendMessage(chat_id=up.message.chat.id, text="Ooops, sorry, incorrect data. Try again! ┐('～`;)┌", reply_markup=remove)
 
 #___________________Buttons Settings_____________________________________________________#
