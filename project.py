@@ -40,7 +40,7 @@ bot_panel=telegram.ReplyKeyboardMarkup(keyb,resize_keyboard=True,one_time_keyboa
 remove=telegram.ReplyKeyboardRemove()
 force=telegram.ForceReply()
 
-def parameters(bot, up):
+def med_panel(bot, up):
     bot.sendMessage(up.message.chat.id,"Choose:",reply_markup=bot_panel)
 
 #___________________Panel Processing_____________________________________________________#
@@ -124,10 +124,10 @@ def weather(bot, up):
 
 dp = up.dispatcher
 start = CommandHandler("start", start)
-parameters = CommandHandler("parameters", parameters)
+med_panel = CommandHandler("med_panel", med_panel)
 weather = CommandHandler("weather", weather)
 dp.add_handler(start)
-dp.add_handler(parameters)
+dp.add_handler(med_panel)
 dp.add_handler(weather)
 dp.add_handler(MessageHandler(Filters.text, echo))
 dp.add_handler(CallbackQueryHandler(get_callback_from_button))
