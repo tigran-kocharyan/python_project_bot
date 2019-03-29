@@ -82,9 +82,7 @@ def button_check(bot, up):
 
 def get_callback_from_button(bot, up):
     query = up.callback_query
-    username = up.effective_user.username
     chat_id = query.message.chat.id
-    message_id = query.message.message_id
     if int(query.data) == 1:
         query.answer()
         api = '0f798fa08e77c5b4a2ad9d1bcbf5d700'
