@@ -7,7 +7,6 @@ import psycopg2 as sql
 import os
 
 up = Updater("728506589:AAEwkNES9a9koAm8CKaOqUDorarnRJaeFY4")
-j = up.job_queue
 dp = up.dispatcher
 bd = sql.connect(host="ec2-54-247-118-238.eu-west-1.compute.amazonaws.com", dbname="d94l6q6a6g2mvm", user="jguojvyjehytsn", password="2fa3407deca1f2bc920fefc973912b3ed4388f727c6bd88039552d6032a458d9")
 cur=bd.cursor()
@@ -41,9 +40,6 @@ force=telegram.ForceReply()
 med_keyb=[["Weight","Height", "Age"],["EXIT"]]                      # Med Settings
 med_panel_set=telegram.ReplyKeyboardMarkup(med_keyb,resize_keyboard=True,one_time_keyboard=True)
 
-reminder_keyb=[["Remind"],["EXIT"]]                                 # Remind Settings
-reminder_panel_set=telegram.ReplyKeyboardMarkup(reminder_keyb,resize_keyboard=True,one_time_keyboard=True)
-
 def buttons():
     keys = [[InlineKeyboardButton('Tomorrow', callback_data='1'), InlineKeyboardButton('No, thanks!', callback_data='2')]]
     return InlineKeyboardMarkup(inline_keyboard=keys)
@@ -51,17 +47,11 @@ def buttons():
 def med_panel(bot, up):
     bot.sendMessage(up.message.chat.id,"Choose:",reply_markup=med_panel_set)
 
-def reminder_panel(bot, up):
-    bot.sendMessage(up.message.chat.id,"What to remind in a minute?:",reply_markup=reminder_panel_set)
-
 #___________________Panel Processing_____________________________________________________#
 def button_check(bot, up):
     try:
         if up.message.text=="EXIT": 
             bot.sendMessage(up.message.chat.id,"Exit (ノωヽ)",reply_markup=remove)
-        elif up.message.text=="Remind":
-            bot.sendMessage(chat_id=up.message.chat.id, text="I will remind you something in a minute")
-            j.run_once(callback_minute, 60)
 
         elif up.message.text=="Weight": # Weight Processing
             bot.sendMessage(chat_id=up.message.chat.id, text="Enter your weight (use point with floating point numbers):", reply_markup=force)
@@ -104,10 +94,6 @@ def get_callback_from_button(bot, up):
         bot.sendMessage(chat_id=chat_id, text="You're welcome (^_~)")
         query.answer()
 
-#___________________Reminding Processing_________________________________________________#
-def callback_minute(context):
-    context.bot.send_message(chat_id=context.up.message.chat.id, text='Reminding!👍')
-
 #___________________Tashkent Weather_____________________________________________________#
 def weather(bot, up):
     api = '0f798fa08e77c5b4a2ad9d1bcbf5d700'
@@ -135,5 +121,3 @@ PORT = int(os.environ.get('PORT', '5000'))
 TOKEN = "728506589:AAEwkNES9a9koAm8CKaOqUDorarnRJaeFY4"
 up.start_webhook(listen='0.0.0.0', port=PORT, url_path=TOKEN)
 up.bot.set_webhook("https://project-py-bot.herokuapp.com/728506589:AAEwkNES9a9koAm8CKaOqUDorarnRJaeFY4")
-
-up.idle()
