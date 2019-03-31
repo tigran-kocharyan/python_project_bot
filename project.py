@@ -125,6 +125,7 @@ def weather(bot, up):
 
 dp.add_handler(CommandHandler("start", start))
 dp.add_handler(CommandHandler("med_panel", med_panel))
+dp.add_handler(CommandHandler("reminder_panel", med_panel))
 dp.add_handler(CommandHandler("weather", weather))
 dp.add_handler(MessageHandler(Filters.text, echo))
 dp.add_handler(CallbackQueryHandler(get_callback_from_button))
