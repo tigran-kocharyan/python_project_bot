@@ -44,12 +44,12 @@ def med_panel(bot, up):
 
 #___________________Functions Processing_________________________________________________#
 def body_surface_area(weight, height):
-    body_surface_area = float((sqrt(weight*height))/60)
-    return("{0:.10f}".format(body_surface_area))
+    body_surface_area_number = float((sqrt(weight*height))/60)
+    return("{0:.10f}".format(body_surface_area_number))
 
 def body_mass_index(weight, height):
-    body_mass_index = float((weight*10000)/(height*height))
-    return("{0:.10f}".format(body_mass_index))
+    body_mass_index_number = float((weight*10000)/(height*height))
+    return("{0:.10f}".format(body_mass_index_number))
 
 def get_health(id, bot, up):
     bot.sendMessage(chat_id=up.message.chat.id, text="Works0")
