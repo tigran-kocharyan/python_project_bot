@@ -85,7 +85,7 @@ def button_check(bot, up): # Panel Processing
         
         elif up.message.text=="My Health":
             bot.sendMessage(chat_id=up.message.chat.id, text="I am here")
-            health_text=get_health(up.message.chat.id)                                
+            health_text=get_health(up.message.chat.id, bot, up)                                
             bot.sendMessage(chat_id=up.message.chat.id, text=health_text)
         elif up.message.reply_to_message.text == "Enter the number of years and months since your last birthday (use strictly this order with a space between them):": # Answer Processing
             years_months=up.message.text.split() #splitting the answer into separated words
