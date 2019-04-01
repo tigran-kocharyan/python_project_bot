@@ -51,7 +51,7 @@ def body_mass_index(weight, height):
     body_mass_index_number = float((weight*10000)/(height*height))
     return("{0:.10f}".format(body_mass_index_number))
 
-def body_mass_index_spec(bmi,bot,up):
+def body_mass_index_spec(bmi):
     if bmi <= 16:
         return("Acute Underweight")
     elif bmi > 16 and bmi <= 18.5:
@@ -70,8 +70,8 @@ def body_mass_index_spec(bmi,bot,up):
 def get_health(id):
     cur.execute(f"SELECT * from data where id={id};")
     health_param = cur.fetchone()
-    bsa=body_surface_area(health_param[3], health_param[1]) #bsa=body_surface_area
-    bmi=body_mass_index(health_param[3], health_param[1]) #bmi=body_mass_index    
+    bsa=body_surface_area(float(health_param[3]), float(health_param[1])) #bsa=body_surface_area
+    bmi=body_mass_index(float(health_param[3]), float(health_param[1])) #bmi=body_mass_index    
     bmi_specification=body_mass_index_spec(float(bmi))
     message_text=f"*Your BSA = {bsa}\nYour BMI = {bmi} | {bmi_specification}*"
     return message_text
