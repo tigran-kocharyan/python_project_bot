@@ -52,26 +52,26 @@ def body_mass_index(weight, height):
     return("{0:.10f}".format(body_mass_index_number))
 
 def body_mass_index_spec(bmi,bot,up):
-    bot.sendMessage(chat_id=up.message.chat.id, text=bmi)
+    bmi_number=float(bmi)
     if bmi <= 16:
         return("Acute Underweight")
-    elif bmi > 16 and bmi <= 18.5:
+    elif bmi_number > 16 and bmi_number <= 18.5:
         return("Underweight")
-    elif bmi > 18.5 and bmi <= 25:
+    elif bmi_number > 18.5 and bmi_number <= 25:
         return("Standard")
-    elif bmi > 25 and bmi <= 30:
+    elif bmi_number > 25 and bmi_number <= 30:
         return ("Overweight")
-    elif bmi > 30 and bmi <= 35:
+    elif bmi_number > 30 and bmi_number <= 35:
         return("First Degree Obesity")
-    elif bmi > 35 and bmi <= 40:
+    elif bmi_number > 35 and bmi_number <= 40:
         return("Second Degree Obesity")
-    elif bmi > 40:
+    elif bmi_number > 40:
         return("Third Degree Obesity")
 
 def get_health(id, bot, up):
     cur.execute(f"SELECT * from data where id={id};")
     health_param = cur.fetchone()
-    bsa=body_surface_area(health_param[3]), health_param[1]) #bsa=body_surface_area
+    bsa=body_surface_area(health_param[3], health_param[1]) #bsa=body_surface_area
     bmi=body_mass_index(health_param[3], health_param[1]) #bmi=body_mass_index    
     bmi_specification=body_mass_index_spec(bmi,bot,up)
     bot.sendMessage(chat_id=up.message.chat.id, text="111")
