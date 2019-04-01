@@ -54,10 +54,9 @@ def body_mass_index(weight, height):
 def get_health(id, bot, up):
     cur.execute(f"SELECT * from data where id={id};")
     health_param = cur.fetchone()
-    bot.sendMessage(chat_id=up.message.chat.id, text=health_param)
     bsa=body_surface_area(int(health_param[3]), int(health_param[1])) #bsa=body_surface_area
     bmi=body_mass_index(int(health_param[3]), int(health_param[1])) #bmi=body_mass_index
-    message_text=f"Your BSA = {bsa}\nYour BMI = {bmi}"
+    message_text=f"*Your BSA = {bsa}\nYour BMI = {bmi}*"
     return message_text
 
 #_________________________________________________________________________________________________#
@@ -74,9 +73,8 @@ def button_check(bot, up): # Panel Processing
             bot.sendMessage(chat_id=up.message.chat.id, text="Enter the number of years and months since your last birthday (use strictly this order with a space between them):", reply_markup=force)
         
         elif up.message.text=="My Health":
-            bot.sendMessage(chat_id=up.message.chat.id, text="I am here")
             health_text=get_health(up.message.chat.id, bot, up)                                
-            bot.sendMessage(chat_id=up.message.chat.id, text=health_text)
+            bot.sendMessage(chat_id=up.message.chat.id, text=health_text, parse_mode=telegram.ParseMode.MARKDOWN)
         elif up.message.reply_to_message.text == "Enter the number of years and months since your last birthday (use strictly this order with a space between them):": # Answer Processing
             years_months=up.message.text.split() #splitting the answer into separated words
             db_add((int(years_months[0]))*12+int(years_months[1]), 'age', up.message.chat.id)
