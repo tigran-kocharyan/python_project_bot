@@ -54,12 +54,12 @@ def body_mass_index(weight, height):
 def get_health(id):
     cur.execute(f"SELECT weight from data where id={id};")
     health_weight = cur.fetchone()
-    cur.execute(f"SELECT age from data where id={id};")
+    cur.execute(f"SELECT age from data where id={id};;")
     health_age = cur.fetchone()
-    cur.execute(f"SELECT height from data where id={id};")
+    cur.execute(f"SELECT height from data where id={id};;")
     health_height = cur.fetchone()
-    bsa=body_surface_area(health_weight, health_height) #bsa=body_surface_area
-    bmi=body_mass_index(health_weight, health_height) #bmi=body_mass_index
+    bsa=body_surface_area(int(health_weight), int(health_height)) #bsa=body_surface_area
+    bmi=body_mass_index(int(health_weight), int(health_height)) #bmi=body_mass_index
     message_text=f"Your BSA = {bsa}\nYour BMI = {bmi}"
     return message_text
 
