@@ -73,7 +73,7 @@ def get_health(id, bot, up):
     bsa=body_surface_area(int(health_param[3]), int(health_param[1])) #bsa=body_surface_area
     bmi=body_mass_index(int(health_param[3]), int(health_param[1])) #bmi=body_mass_index    
     bmi_specification=body_mass_index_spec(bmi)
-        
+    bot.sendMessage(chat_id=up.message.chat.id, text="111")
     message_text=f"*Your BSA = {bsa}\nYour BMI = {bmi} | {bmi_specification}*"
     return message_text
 
