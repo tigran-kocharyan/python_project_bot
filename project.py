@@ -51,20 +51,20 @@ def body_mass_index(weight, height):
     body_mass_index_number = float((weight*10000)/(height*height))
     return("{0:.10f}".format(body_mass_index_number))
 
-def body_mass_index_spec(body_mass_index):
-    if body_mass_index <= 16:
+def body_mass_index_spec(bmi):
+    if bmi <= 16:
         return("Acute Underweight")
-    elif body_mass_index > 16 and body_mass_index <= 18.5:
+    elif bmi > 16 and bmi <= 18.5:
         return("Underweight")
-    elif body_mass_index > 18.5 and body_mass_index <= 25:
+    elif bmi > 18.5 and bmi <= 25:
         return("Standard")
-    elif body_mass_index > 25 and body_mass_index <= 30:
+    elif bmi > 25 and bmi <= 30:
         return ("Overweight")
-    elif body_mass_index > 30 and body_mass_index <= 35:
+    elif bmi > 30 and bmi <= 35:
         return("First Degree Obesity")
-    elif body_mass_index > 35 and body_mass_index <= 40:
+    elif bmi > 35 and bmi <= 40:
         return("Second Degree Obesity")
-    elif body_mass_index > 40:
+    elif bmi > 40:
         return("Third Degree Obesity")
 
 def get_health(id, bot, up):
