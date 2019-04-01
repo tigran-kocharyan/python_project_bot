@@ -62,9 +62,9 @@ def get_health(id, bot, up):
     cur.execute(f"SELECT height from data where id={id};;")
     health_height = cur.fetchone()
     bot.sendMessage(chat_id=up.message.chat.id, text=health_height)
-    bsa=body_surface_area(int(health_weight), int(health_height)) #bsa=body_surface_area
+    bsa=body_surface_area(int(health_weight[0]), int(health_height[0])) #bsa=body_surface_area
     bot.sendMessage(chat_id=up.message.chat.id, text="Works4")
-    bmi=body_mass_index(int(health_weight), int(health_height)) #bmi=body_mass_index
+    bmi=body_mass_index(int(health_weight[0]), int(health_height[0])) #bmi=body_mass_index
     bot.sendMessage(chat_id=up.message.chat.id, text="Works5")
     message_text=f"Your BSA = {bsa}\nYour BMI = {bmi}"
     bot.sendMessage(chat_id=up.message.chat.id, text="Works6")
