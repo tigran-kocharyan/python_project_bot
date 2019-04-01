@@ -52,7 +52,7 @@ def body_mass_index(weight, height):
     return("{0:.10f}".format(body_mass_index_number))
 
 def body_mass_index_spec(bmi,bot,up):
-    bot.sendMessage(chat_id=up.message.chat.id, text="111")
+    bot.sendMessage(chat_id=up.message.chat.id, text=bmi)
     if bmi <= 16:
         return("Acute Underweight")
     elif bmi > 16 and bmi <= 18.5:
