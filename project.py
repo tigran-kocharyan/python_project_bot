@@ -44,7 +44,7 @@ def med_panel(bot, up):
 
 #___________________Functions Processing_________________________________________________#
 def body_surface_area(weight, height, bot, up):
-    body_surface_area_number = float((sqrt(weight*height))/60)
+    body_surface_area_number = float(((weight*height)**(1/2))/60)
     bot.sendMessage(chat_id=up.message.chat.id, text="Works_1")
     return("{0:.10f}".format(body_surface_area_number))
 
