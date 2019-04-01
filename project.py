@@ -43,15 +43,12 @@ def med_panel(bot, up):
     bot.sendMessage(up.message.chat.id,"Choose:",reply_markup=med_panel_set)
 
 #___________________Functions Processing_________________________________________________#
-def body_surface_area(weight, height, bot, up):
-    bot.sendMessage(chat_id=up.message.chat.id, text="Works_1")
+def body_surface_area(weight, height):
     body_surface_area_number = float(((weight*height)**(1/2))/60)
-    bot.sendMessage(chat_id=up.message.chat.id, text="Works_1")
     return("{0:.10f}".format(body_surface_area_number))
 
-def body_mass_index(weight, height, bot, up):
+def body_mass_index(weight, height):
     body_mass_index_number = float((weight*10000)/(height*height))
-    bot.sendMessage(chat_id=up.message.chat.id, text="Works_2")
     return("{0:.10f}".format(body_mass_index_number))
 
 def get_health(id, bot, up):
@@ -65,9 +62,9 @@ def get_health(id, bot, up):
     cur.execute(f"SELECT height from data where id={id};;")
     health_height = cur.fetchone()
     bot.sendMessage(chat_id=up.message.chat.id, text="Works3")
-    bsa=body_surface_area(int(health_weight), int(health_height), bot, up) #bsa=body_surface_area
+    bsa=body_surface_area(int(health_weight), int(health_height)) #bsa=body_surface_area
     bot.sendMessage(chat_id=up.message.chat.id, text="Works4")
-    bmi=body_mass_index(int(health_weight), int(health_height), bot, up) #bmi=body_mass_index
+    bmi=body_mass_index(int(health_weight), int(health_height)) #bmi=body_mass_index
     bot.sendMessage(chat_id=up.message.chat.id, text="Works5")
     message_text=f"Your BSA = {bsa}\nYour BMI = {bmi}"
     bot.sendMessage(chat_id=up.message.chat.id, text="Works6")
