@@ -16,7 +16,6 @@ def start(bot, up):
     up.message.reply_text('Hello (*・ω・)ﾉ')
     bot.sendDocument(chat_id=up.message.chat_id, document='CAADAQAD4AEAAkWQ0AeCTzUa7LnRbQI')
     check_id(up.message.chat.id)
-
 def echo(bot, up):
     button_check(bot, up)
 
@@ -27,28 +26,45 @@ def check_id(id):                                                   # Занес
     if (id,) not in data_id:
         cur.execute("INSERT into data (id) VALUES({0});".format(id))
         bd.commit()
-
 def db_add(number, param, id_db):                                   # Занесение параметров пользователя в data
     cur.execute(f"UPDATE data SET {param} = {number} WHERE id = {id_db};")
     bd.commit()
 
 #___________________Panel + Buttons Settings_____________________________________________#
-
 remove=telegram.ReplyKeyboardRemove()
 force=telegram.ForceReply()
-
-med_keyb=[["Weight","Height", "Age"],["EXIT"]]                      # Med Settings
+med_keyb=[["Weight","Height", "Age"],["My Health"],["EXIT"]]                      # Med Settings
 med_panel_set=telegram.ReplyKeyboardMarkup(med_keyb,resize_keyboard=True,one_time_keyboard=True)
 
 def buttons():
     keys = [[InlineKeyboardButton('Tomorrow', callback_data='1'), InlineKeyboardButton('No, thanks!', callback_data='2')]]
     return InlineKeyboardMarkup(inline_keyboard=keys)
-
 def med_panel(bot, up):
     bot.sendMessage(up.message.chat.id,"Choose:",reply_markup=med_panel_set)
 
-#___________________Panel Processing_____________________________________________________#
-def button_check(bot, up):
+#___________________Functions Processing_________________________________________________#
+def body_surface_area(weight, height):
+    body_surface_area = float((sqrt(weight*height))/60)
+    return("{0:.10f}".format(body_surface_area))
+
+def body_mass_index(weight, height):
+    body_mass_index = float((weight*10000)/(height*height))
+    return("{0:.10f}".format(body_mass_index))
+
+def get_health(id):
+    cur.execute(f"SELECT weight from data where id={id};")
+    health_weight = cur.fetchone()
+    cur.execute(f"SELECT age from data where id={id};;")
+    health_age = cur.fetchone()
+    cur.execute(f"SELECT height from data where id={id};;")
+    health_height = cur.fetchone()
+    bsa=body_surface_area(health_weight, health_height) #bsa=body_surface_area
+    bmi=body_mass_index(health_weight, health_height) #bmi=body_mass_index
+    message_text=f"Your BSA = {bsa}\nYour BMI = {bmi}"
+    return message_text
+
+#_________________________________________________________________________________________________#
+def button_check(bot, up): # Panel Processing
     try:
         if up.message.text=="EXIT": 
             bot.sendMessage(up.message.chat.id,"Exit (ノωヽ)",reply_markup=remove)
@@ -59,7 +75,10 @@ def button_check(bot, up):
             bot.sendMessage(chat_id=up.message.chat.id, text="Enter your height in integers:", reply_markup=force)
         elif up.message.text=="Age":    # Age Processing
             bot.sendMessage(chat_id=up.message.chat.id, text="Enter the number of years and months since your last birthday (use strictly this order with a space between them):", reply_markup=force)
-                                        
+        
+        elif up.message.text=="My Health":
+            health_text=get_health(up.message.chat.id)                                
+            bot.sendMessage(chat_id=up.message.chat.id, text=health_text)
         elif up.message.reply_to_message.text == "Enter the number of years and months since your last birthday (use strictly this order with a space between them):": # Answer Processing
             years_months=up.message.text.split() #splitting the answer into separated words
             db_add((int(years_months[0]))*12+int(years_months[1]), 'age', up.message.chat.id)
@@ -75,8 +94,8 @@ def button_check(bot, up):
     except:
         bot.sendMessage(chat_id=up.message.chat.id, text="Ooops, sorry, incorrect data. Try again! ┐('～`;)┌", reply_markup=remove)
 
-#___________________Buttons Processing___________________________________________________#
-def get_callback_from_button(bot, up):
+#_________________________________________________________________________________________________#
+def get_callback_from_button(bot, up): # Buttons Processing
     query = up.callback_query
     chat_id = query.message.chat.id
     if int(query.data) == 1:
@@ -94,8 +113,8 @@ def get_callback_from_button(bot, up):
         bot.sendMessage(chat_id=chat_id, text="You're welcome (^_~)")
         query.answer()
 
-#___________________Tashkent Weather_____________________________________________________#
-def weather(bot, up):
+#_________________________________________________________________________________________________#
+def weather(bot, up): # Tashkent Weather
     api = '0f798fa08e77c5b4a2ad9d1bcbf5d700'
     try:
         settings = {'q': 'Tashkent', 'units': 'metric', 'lang': 'en', 'APPID': api}
@@ -108,7 +127,6 @@ def weather(bot, up):
         pass
 
 #___________________Dispatcher settgings_________________________________________________#
-
 dp.add_handler(CommandHandler("start", start))
 dp.add_handler(CommandHandler("med_panel", med_panel))
 dp.add_handler(CommandHandler("weather", weather))
@@ -116,7 +134,6 @@ dp.add_handler(MessageHandler(Filters.text, echo))
 dp.add_handler(CallbackQueryHandler(get_callback_from_button))
 
 #___________________webhook settings_____________________________________________________#
-
 PORT = int(os.environ.get('PORT', '5000'))
 TOKEN = "728506589:AAEwkNES9a9koAm8CKaOqUDorarnRJaeFY4"
 up.start_webhook(listen='0.0.0.0', port=PORT, url_path=TOKEN)
