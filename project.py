@@ -51,12 +51,30 @@ def body_mass_index(weight, height):
     body_mass_index_number = float((weight*10000)/(height*height))
     return("{0:.10f}".format(body_mass_index_number))
 
+def body_mass_index_spec(body_mass_index):
+    if body_mass_index <= 16:
+        return("Acute Underweight")
+    elif body_mass_index > 16 and body_mass_index <= 18.5:
+        return("Underweight")
+    elif body_mass_index > 18.5 and body_mass_index <= 25:
+        return("Standard")
+    elif body_mass_index > 25 and body_mass_index <= 30:
+        return ("Overweight")
+    elif body_mass_index > 30 and body_mass_index <= 35:
+        return("First Degree Obesity")
+    elif body_mass_index > 35 and body_mass_index <= 40:
+        return("Second Degree Obesity")
+    elif body_mass_index > 40:
+        return("Third Degree Obesity")
+
 def get_health(id, bot, up):
     cur.execute(f"SELECT * from data where id={id};")
     health_param = cur.fetchone()
     bsa=body_surface_area(int(health_param[3]), int(health_param[1])) #bsa=body_surface_area
-    bmi=body_mass_index(int(health_param[3]), int(health_param[1])) #bmi=body_mass_index
-    message_text=f"*Your BSA = {bsa}\nYour BMI = {bmi}*"
+    bmi=body_mass_index(int(health_param[3]), int(health_param[1])) #bmi=body_mass_index    
+    bmi_specification=body_mass_index_spec(bmi)
+        
+    message_text=f"*Your BSA = {bsa}\nYour BMI = {bmi} | {bmi_specification}*"
     return message_text
 
 #_________________________________________________________________________________________________#
