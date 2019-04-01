@@ -52,6 +52,7 @@ def body_mass_index(weight, height):
     return("{0:.10f}".format(body_mass_index))
 
 def get_health(id, bot, up):
+    bot.sendMessage(chat_id=up.message.chat.id, text="Works0")
     cur.execute(f"SELECT weight from data where id={id};")
     health_weight = cur.fetchone()
     bot.sendMessage(chat_id=up.message.chat.id, text="Works1")
