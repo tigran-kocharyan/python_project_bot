@@ -51,16 +51,22 @@ def body_mass_index(weight, height):
     body_mass_index = float((weight*10000)/(height*height))
     return("{0:.10f}".format(body_mass_index))
 
-def get_health(id):
+def get_health(id, bot, up):
     cur.execute(f"SELECT weight from data where id={id};")
     health_weight = cur.fetchone()
+    bot.sendMessage(chat_id=up.message.chat.id, text="Works1")
     cur.execute(f"SELECT age from data where id={id};;")
     health_age = cur.fetchone()
+    bot.sendMessage(chat_id=up.message.chat.id, text="Works2")
     cur.execute(f"SELECT height from data where id={id};;")
     health_height = cur.fetchone()
+    bot.sendMessage(chat_id=up.message.chat.id, text="Works3")
     bsa=body_surface_area(int(health_weight), int(health_height)) #bsa=body_surface_area
+    bot.sendMessage(chat_id=up.message.chat.id, text="Works4")
     bmi=body_mass_index(int(health_weight), int(health_height)) #bmi=body_mass_index
+    bot.sendMessage(chat_id=up.message.chat.id, text="Works5")
     message_text=f"Your BSA = {bsa}\nYour BMI = {bmi}"
+    bot.sendMessage(chat_id=up.message.chat.id, text="Works6")
     return message_text
 
 #_________________________________________________________________________________________________#
