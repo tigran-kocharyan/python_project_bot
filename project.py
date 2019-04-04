@@ -78,10 +78,11 @@ def get_health(id):
 
 def try_except(function):
     def wrapper(*args):
+        print(args)
         try:
             result=function(*args)
         except:
-            args[0].sendMessage(chat_id=up.message.chat.id, text="Ooops, sorry, incorrect data. Try again! ┐('～`;)┌", reply_markup=remove)
+            args[0].sendMessage(chat_id=args[1].message.chat.id, text="Ooops, sorry, incorrect data. Try again! ┐('～`;)┌", reply_markup=remove)
     return wrapper
 #_________________________________________________________________________________________________#
 @try_except
