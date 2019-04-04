@@ -76,6 +76,13 @@ def get_health(id):
     message_text=f"*Your BSA = {bsa}\nYour BMI = {bmi} | {bmi_specification}*"
     return message_text
 
+def try_except(function):
+    def wrapper(*args):
+        try:
+            result=function(*args)
+        except:
+            args[0].sendMessage(chat_id=up.message.chat.id, text="Ooops, sorry, incorrect data. Try again! ┐('～`;)┌", reply_markup=remove)
+    return wrapper
 #_________________________________________________________________________________________________#
 @try_except
 def button_check(bot, up): # Panel Processing
@@ -103,17 +110,7 @@ def button_check(bot, up): # Panel Processing
             db_add(int(up.message.text), 'height', up.message.chat.id)
             bot.sendMessage(up.message.chat.id, "Your height is added. Check the table!👌", reply_markup = remove)
         else:
-            return False
-
-def try_except(function):
-    def wrapper(*args):
-            try:
-                result=function(*args)
-                if not result:
-                    args[0].sendMessage(chat_id=up.message.chat.id, text="Ooops, sorry, incorrect data. Try again! ┐('～`;)┌", reply_markup=remove)
-            except:
-                bot.sendMessage(chat_id=up.message.chat.id, text="Ooops, sorry, incorrect data. Try again! ┐('～`;)┌", reply_markup=remove)
-    return wrapper
+            bot.sendMessage(chat_id=up.message.chat.id, text="Ooops, sorry, incorrect data. Try again! ┐('～`;)┌", reply_markup=remove)
 #_________________________________________________________________________________________________#
 def get_callback_from_button(bot, up): # Buttons Processing
     query = up.callback_query
