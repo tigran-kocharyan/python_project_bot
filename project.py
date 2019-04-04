@@ -71,15 +71,15 @@ def get_health(id):
     cur.execute(f"SELECT * from data where id={id};")
     health_param = cur.fetchone()
     bsa=body_surface_area(float(health_param[3]), float(health_param[1])) #bsa=body_surface_area
-    bmi=body_mass_index(float(health_param[3]), float(health_param[1])) #bmi=body_mass_index    
+    bmi=body_mass_index(float(health_param[3]), float(health_param[1])) #bmi=body_mass_index
     bmi_specification=body_mass_index_spec(float(bmi))
     message_text=f"*Your BSA = {bsa}\nYour BMI = {bmi} | {bmi_specification}*"
     return message_text
 
 #_________________________________________________________________________________________________#
+@try_except
 def button_check(bot, up): # Panel Processing
-    try:
-        if up.message.text=="EXIT": 
+        if up.message.text=="EXIT":
             bot.sendMessage(up.message.chat.id,"Exit (ノωヽ)",reply_markup=remove)
 
         elif up.message.text=="Weight": # Weight Processing
@@ -88,25 +88,32 @@ def button_check(bot, up): # Panel Processing
             bot.sendMessage(chat_id=up.message.chat.id, text="Enter your height in integers:", reply_markup=force)
         elif up.message.text=="Age":    # Age Processing
             bot.sendMessage(chat_id=up.message.chat.id, text="Enter the number of years and months since your last birthday (use strictly this order with a space between them):", reply_markup=force)
-        
+
         elif up.message.text=="My Health":
-            health_text=get_health(up.message.chat.id)                                
+            health_text=get_health(up.message.chat.id)
             bot.sendMessage(chat_id=up.message.chat.id, text=health_text, parse_mode=telegram.ParseMode.MARKDOWN)
         elif up.message.reply_to_message.text == "Enter the number of years and months since your last birthday (use strictly this order with a space between them):": # Answer Processing
             years_months=up.message.text.split() #splitting the answer into separated words
             db_add((int(years_months[0]))*12+int(years_months[1]), 'age', up.message.chat.id)
-            bot.sendMessage(up.message.chat.id, "Your age is added. Check the table!👌", reply_markup = remove)                 
+            bot.sendMessage(up.message.chat.id, "Your age is added. Check the table!👌", reply_markup = remove)
         elif up.message.reply_to_message.text == "Enter your weight (use point with floating point numbers):" and (float(up.message.text))>=0:
             db_add(float(up.message.text), 'weight', up.message.chat.id)
-            bot.sendMessage(up.message.chat.id, "Your weight is added. Check the table!👌", reply_markup = remove)      
+            bot.sendMessage(up.message.chat.id, "Your weight is added. Check the table!👌", reply_markup = remove)
         elif up.message.reply_to_message.text == "Enter your height in integers:" and (int(up.message.text))>0:
             db_add(int(up.message.text), 'height', up.message.chat.id)
-            bot.sendMessage(up.message.chat.id, "Your height is added. Check the table!👌", reply_markup = remove) 
+            bot.sendMessage(up.message.chat.id, "Your height is added. Check the table!👌", reply_markup = remove)
         else:
-            bot.sendMessage(chat_id=up.message.chat.id, text="Ooops, sorry, incorrect data. Try again! ┐('～`;)┌", reply_markup=remove)
-    except:
-        bot.sendMessage(chat_id=up.message.chat.id, text="Ooops, sorry, incorrect data. Try again! ┐('～`;)┌", reply_markup=remove)
+            return False
 
+def try_except(function):
+    def wrapper(*args):
+            try:
+                result=function(*args)
+                if not result:
+                    args[0].sendMessage(chat_id=up.message.chat.id, text="Ooops, sorry, incorrect data. Try again! ┐('～`;)┌", reply_markup=remove)
+            except:
+                bot.sendMessage(chat_id=up.message.chat.id, text="Ooops, sorry, incorrect data. Try again! ┐('～`;)┌", reply_markup=remove)
+    return wrapper
 #_________________________________________________________________________________________________#
 def get_callback_from_button(bot, up): # Buttons Processing
     query = up.callback_query
