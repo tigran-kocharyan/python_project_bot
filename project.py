@@ -151,7 +151,9 @@ dp.add_handler(MessageHandler(Filters.text, echo))
 dp.add_handler(CallbackQueryHandler(get_callback_from_button))
 
 #___________________webhook settings_____________________________________________________#
-PORT = int(os.environ.get('PORT', '5000'))
-TOKEN = "728506589:AAEwkNES9a9koAm8CKaOqUDorarnRJaeFY4"
-up.start_webhook(listen='0.0.0.0', port=PORT, url_path=TOKEN)
-up.bot.set_webhook("https://project-py-bot.herokuapp.com/728506589:AAEwkNES9a9koAm8CKaOqUDorarnRJaeFY4")
+# PORT = int(os.environ.get('PORT', '5000'))
+# TOKEN = "728506589:AAEwkNES9a9koAm8CKaOqUDorarnRJaeFY4"
+# up.start_webhook(listen='0.0.0.0', port=PORT, url_path=TOKEN)
+# up.bot.set_webhook("https://project-py-bot.herokuapp.com/728506589:AAEwkNES9a9koAm8CKaOqUDorarnRJaeFY4")
+
+up.start_polling()
