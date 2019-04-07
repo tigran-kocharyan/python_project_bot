@@ -1,9 +1,6 @@
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton
-import requests
-import telegram
-import datetime
-import os
+import requests, telegram, datetime, os
 import psycopg2 as sql
 
 up = Updater("728506589:AAEwkNES9a9koAm8CKaOqUDorarnRJaeFY4")
@@ -13,8 +10,7 @@ cur=bd.cursor()
 
 #___________________Commands Settings____________________________________________________#
 def start(bot, up):
-    bot.sendMessage(61174279,"sdfsdf")
-    bot.sendMessage(chat_id=up.message.chat.id, text="Hello (*・ω・)ﾉ Bot works👌\nUse `/help` to get to know with functions this bot can perform")
+    bot.sendMessage(chat_id=up.message.chat.id, text="Bot works👌\nUse `/help` to get to know with functions this bot can perform", parse_mode=telegram.ParseMode.MARKDOWN)
     bot.sendDocument(chat_id=up.message.chat_id, document='CAADAQAD4AEAAkWQ0AeCTzUa7LnRbQI')
     check_id(up.message.chat.id)
 def help(bot, up):
