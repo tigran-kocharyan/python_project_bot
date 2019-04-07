@@ -1,10 +1,7 @@
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton
-import requests
-import datetime
-import telegram
+import requests, datetime, telegram, os
 import psycopg2 as sql
-import os
 
 up = Updater("728506589:AAEwkNES9a9koAm8CKaOqUDorarnRJaeFY4")
 dp = up.dispatcher
@@ -13,9 +10,11 @@ cur=bd.cursor()
 
 #___________________Commands Settings____________________________________________________#
 def start(bot, up):
-    up.message.reply_text('Hello (*・ω・)ﾉ')
+    bot.sendMessage(chat_id=up.message.chat.id, text="Hello (*・ω・)ﾉ Bot works👌\nUse `/help` to get to know with functions this bot can perform", parse_mode=telegram.ParseMode.MARKDOWN)
     bot.sendDocument(chat_id=up.message.chat_id, document='CAADAQAD4AEAAkWQ0AeCTzUa7LnRbQI')
     check_id(up.message.chat.id)
+def help(bot, up):
+    bot.sendMessage(chat_id=up.message.chat.id, text="*Hey✌️ I am a med bot 🤖*\nI can help you to monitor your health and sooner will be able to remind you to do smth.\nJust text me your parameters for now", parse_mode=telegram.ParseMode.MARKDOWN)
 def echo(bot, up):
     button_check(bot, up)
 
@@ -146,6 +145,7 @@ def weather(bot, up): # Tashkent Weather
 
 #___________________Dispatcher settgings_________________________________________________#
 dp.add_handler(CommandHandler("start", start))
+dp.add_handler(CommandHandler("help", help))
 dp.add_handler(CommandHandler("med_panel", med_panel))
 dp.add_handler(CommandHandler("weather", weather))
 dp.add_handler(MessageHandler(Filters.text, echo))
