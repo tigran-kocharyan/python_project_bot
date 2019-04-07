@@ -14,7 +14,7 @@ cur=bd.cursor()
 #___________________Commands Settings____________________________________________________#
 def start(bot, up):
     bot.sendMessage(61174279,"sdfsdf")
-    bot.sendMessage(chat_id=up.message.chat.id, text="Hello (*・ω・)ﾉ Bot works👌\nUse `/help` to get to know with functions this bot can perform", parse_mode=telegram.ParseMode.MARKDOWN)
+    bot.sendMessage(chat_id=up.message.chat.id, text="Hello (*・ω・)ﾉ Bot works👌\nUse `/help` to get to know with functions this bot can perform")
     bot.sendDocument(chat_id=up.message.chat_id, document='CAADAQAD4AEAAkWQ0AeCTzUa7LnRbQI')
     check_id(up.message.chat.id)
 def help(bot, up):
