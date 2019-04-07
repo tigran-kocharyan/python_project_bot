@@ -1,6 +1,9 @@
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton
-import requests, datetime, telegram, os
+import requests
+import telegram
+import datetime
+import os
 import psycopg2 as sql
 
 up = Updater("728506589:AAEwkNES9a9koAm8CKaOqUDorarnRJaeFY4")
