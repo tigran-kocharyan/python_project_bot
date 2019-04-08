@@ -14,7 +14,7 @@ def start(bot, up):
     bot.sendDocument(chat_id=up.message.chat_id, document='CAADAQAD4AEAAkWQ0AeCTzUa7LnRbQI')
     check_id(up.message.chat.id)
 def help(bot, up):
-    bot.sendMessage(chat_id=up.message.chat.id, text="*Hey✌️ I am an assistant  bot 🤖*\nI can help you to monitor your health, show the weather and later will be able to remind you to do smth.\nJust text me your parameters for now.", parse_mode=telegram.ParseMode.MARKDOWN)
+    bot.sendMessage(chat_id=up.message.chat.id, text="*Hey✌️ I am an assistant  bot 🤖*\nI can help you to monitor your health, show the weather and later will be able to remind you to do smth.\nJust use `/med_panel` to put your parameters (weight, height and age) or `/weather`", parse_mode=telegram.ParseMode.MARKDOWN)
 def echo(bot, up):
     button_check(bot, up)
 
