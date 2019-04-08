@@ -1,22 +1,20 @@
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton
-import telegram
-import datetime
-import os
+import requests, os, telegram, datetime
 import psycopg2 as sql
 
 up = Updater("728506589:AAEwkNES9a9koAm8CKaOqUDorarnRJaeFY4")
 dp = up.dispatcher
 bd = sql.connect(host="ec2-54-247-118-238.eu-west-1.compute.amazonaws.com", dbname="d94l6q6a6g2mvm", user="jguojvyjehytsn", password="2fa3407deca1f2bc920fefc973912b3ed4388f727c6bd88039552d6032a458d9")
-cur=bd.cursor()
+cur= bd.cursor()
 
 #___________________Commands Settings____________________________________________________#
 def start(bot, up):
-    bot.sendMessage(chat_id=up.message.chat.id, text="Bot works👌\nUse `/help` to get to know with functions this bot can perform", parse_mode=telegram.ParseMode.MARKDOWN)
+    bot.sendMessage(chat_id=up.message.chat.id, text="Hello. Bot works👌\nUse `/help` to get to know with functions this bot can perform", parse_mode=telegram.ParseMode.MARKDOWN)
     bot.sendDocument(chat_id=up.message.chat_id, document='CAADAQAD4AEAAkWQ0AeCTzUa7LnRbQI')
     check_id(up.message.chat.id)
 def help(bot, up):
-    bot.sendMessage(chat_id=up.message.chat.id, text="*Hey✌️ I am a med bot 🤖*\nI can help you to monitor your health and sooner will be able to remind you to do smth.\nJust text me your parameters for now.", parse_mode=telegram.ParseMode.MARKDOWN)
+    bot.sendMessage(chat_id=up.message.chat.id, text="*Hey✌️ I am an assistant  bot 🤖*\nI can help you to monitor your health, show the weather and sooner will be able to remind you to do smth.\nJust text me your parameters for now.", parse_mode=telegram.ParseMode.MARKDOWN)
 def echo(bot, up):
     button_check(bot, up)
 
@@ -54,19 +52,19 @@ def body_mass_index(weight, height):
 
 def body_mass_index_spec(bmi):
     if bmi <= 16:
-        return("Acute Underweight")
+        return("Acute Underweight.")
     elif bmi > 16 and bmi <= 18.5:
-        return("Underweight")
+        return("Underweight.")
     elif bmi > 18.5 and bmi <= 25:
-        return("Standard")
+        return("Standard.")
     elif bmi > 25 and bmi <= 30:
-        return ("Overweight")
+        return ("Overweight.")
     elif bmi > 30 and bmi <= 35:
-        return("First Degree Obesity")
+        return("First Degree Obesity.")
     elif bmi > 35 and bmi <= 40:
-        return("Second Degree Obesity")
+        return("Second Degree Obesity.")
     elif bmi > 40:
-        return("Third Degree Obesity")
+        return("Third Degree Obesity.")
 
 def get_health(id):
     cur.execute(f"SELECT * from data where id={id};")
@@ -76,6 +74,11 @@ def get_health(id):
     bmi_specification=body_mass_index_spec(float(bmi))
     message_text=f"*Your BSA = {bsa}\nYour BMI = {bmi} | {bmi_specification}*"
     return message_text
+
+def get_weather(api):
+    settings = {'q': 'Tashkent', 'units': 'metric', 'lang': 'en', 'APPID': api}
+    r = requests.get('http://api.openweathermap.org/data/2.5/forecast', params=settings)
+    return(r.json())
 
 def try_except(function):
     def wrapper(*args):
@@ -88,7 +91,7 @@ def try_except(function):
 @try_except
 def button_check(bot, up): # Panel Processing
         if up.message.text=="EXIT":
-            bot.sendMessage(up.message.chat.id,"Exit (ノωヽ)",reply_markup=remove)
+            bot.sendMessage(up.message.chat.id,"Exit😥",reply_markup=remove)
 
         elif up.message.text=="Weight": # Weight Processing
             bot.sendMessage(chat_id=up.message.chat.id, text="Enter your weight (use point with floating point numbers):", reply_markup=force)
@@ -113,37 +116,22 @@ def button_check(bot, up): # Panel Processing
 
         else:
             bot.sendMessage(chat_id=up.message.chat.id, text="Ooops, sorry, incorrect data. Try again! ┐('～`;)┌", reply_markup=remove)
-#_________________________________________________________________________________________________#
-def get_callback_from_button(bot, up): # Buttons Processing
-    query = up.callback_query
-    chat_id = query.message.chat.id
-    if int(query.data) == 1:
-        query.answer()
-        api = '0f798fa08e77c5b4a2ad9d1bcbf5d700'
-        try:
-            settings = {'q': 'Tashkent', 'units': 'metric', 'lang': 'en', 'APPID': api}
-            r = requests.get('http://api.openweathermap.org/data/2.5/forecast', params=settings)
-            data = r.json()
-            bot.sendMessage(chat_id=chat_id, text=f"Tomorrow's weather in Tashkent: {int(data['list'][1]['main']['temp_max'])}°C")
-        except Exception as e:
-            print("Exception (weather):", e)
-            pass
-    elif int(query.data) == 2:
-        bot.sendMessage(chat_id=chat_id, text="You're welcome (^_~)")
-        query.answer()
 
 #_________________________________________________________________________________________________#
+@try_except
 def weather(bot, up): # Tashkent Weather
-    api = '0f798fa08e77c5b4a2ad9d1bcbf5d700'
-    try:
-        settings = {'q': 'Tashkent', 'units': 'metric', 'lang': 'en', 'APPID': api}
-        r = requests.get(
-            'http://api.openweathermap.org/data/2.5/forecast', params=settings)
-        data = r.json()
-        bot.sendMessage(chat_id=up.message.chat_id, text=f"Current weather in Tashkent: {int(data['list'][0]['main']['temp_max'])}°C", reply_markup=buttons())
-    except Exception as e:
-        print("Exception (weather):", e)
-        pass
+    data=get_weather('0f798fa08e77c5b4a2ad9d1bcbf5d700')
+    bot.sendMessage(chat_id=up.message.chat_id, text=f"Current weather in Tashkent: {int(data['list'][0]['main']['temp_max'])}°C", reply_markup=buttons())
+
+@try_except
+def get_callback_from_button(bot, up): # Buttons Processing
+    if int(up.callback_query.data) == 1:
+        up.callback_query.answer()
+        data = get_weather('0f798fa08e77c5b4a2ad9d1bcbf5d700')
+        bot.sendMessage(chat_id=up.callback_query.message.chat.id, text=f"Tomorrow's weather in Tashkent: {int(data['list'][1]['main']['temp_max'])}°C")
+    elif int(up.callback_query.data) == 2:
+        up.callback_query.answer()
+        bot.sendMessage(chat_id=up.callback_query.message.chat.id, text="You're welcome🤗")
 
 #___________________Dispatcher settgings_________________________________________________#
 dp.add_handler(CommandHandler("start", start))
