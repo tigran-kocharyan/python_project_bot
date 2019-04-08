@@ -91,7 +91,7 @@ def try_except(function):
 @try_except
 def button_check(bot, up): # Panel Processing
         if up.message.text=="EXIT":
-            bot.sendMessage(up.message.chat.id,"Exit😥",reply_markup=remove)
+            bot.sendMessage(up.message.chat.id,"Exit 😥",reply_markup=remove)
 
         elif up.message.text=="Weight": # Weight Processing
             bot.sendMessage(chat_id=up.message.chat.id, text="Enter your weight (use point with floating point numbers):", reply_markup=force)
@@ -131,7 +131,7 @@ def get_callback_from_button(bot, up): # Buttons Processing
         bot.sendMessage(chat_id=up.callback_query.message.chat.id, text=f"Tomorrow's weather in Tashkent: {int(data['list'][1]['main']['temp_max'])}°C")
     elif int(up.callback_query.data) == 2:
         up.callback_query.answer()
-        bot.sendMessage(chat_id=up.callback_query.message.chat.id, text="You're welcome🤗")
+        bot.sendMessage(chat_id=up.callback_query.message.chat.id, text="You're welcome 🤗")
 
 #___________________Dispatcher settgings_________________________________________________#
 dp.add_handler(CommandHandler("start", start))
